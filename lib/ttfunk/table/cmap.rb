@@ -1,4 +1,4 @@
-module TTFunk  
+module TTFunk
   class Table
     class Cmap < Table
       attr_reader :version
@@ -15,7 +15,8 @@ module TTFunk
       def unicode
         # Because most callers just call .first on the result, put tables with highest-number format first.
         # (Tables with higher format numbers tend to be more complete, especially in higher/astral Unicode ranges.)
-        @unicode ||= @tables.select { |table| table.unicode? }.sort{|a,b| b.format <=> a.format }
+        @unicode ||= @tables.select { |table| table.unicode? && table.supported? }
+          .sort { |a,b| b.format <=> a.format }
       end
 
       private
@@ -29,7 +30,7 @@ module TTFunk
           end
         end
     end
-    
+
   end
 end
 
